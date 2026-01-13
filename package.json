@@ -1,0 +1,37 @@
+{
+    "name": "@affectively/wasm-data-aggregator",
+    "version": "1.0.0",
+    "description": "High-performance WebAssembly data aggregation - statistics, grouping, time-series operations.",
+    "main": "pkg/wasm_data_aggregator.js",
+    "types": "pkg/wasm_data_aggregator.d.ts",
+    "files": [
+        "pkg",
+        "src",
+        "Cargo.toml",
+        "LICENSE",
+        "README.md"
+    ],
+    "scripts": {
+        "build": "wasm-pack build --target web --out-dir pkg",
+        "build:node": "wasm-pack build --target nodejs --out-dir pkg-node",
+        "test": "cargo test"
+    },
+    "keywords": [
+        "wasm",
+        "webassembly",
+        "data",
+        "aggregation",
+        "statistics",
+        "time-series",
+        "rust"
+    ],
+    "author": "AFFECTIVELY <opensource@affectively.app>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/affectively-ai/wasm-data-aggregator.git"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}
