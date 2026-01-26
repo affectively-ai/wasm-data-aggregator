@@ -16,7 +16,7 @@ High-performance WebAssembly data aggregation utilities written in Rust.
 
 ```bash
 npm install @affectively/wasm-data-aggregator
-```
+```text
 
 ## Quick Start
 
