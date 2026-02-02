@@ -14,8 +14,6 @@
   "scripts": {
     "build": "wasm-pack build --target web --out-dir pkg",
     "build:node": "wasm-pack build --target nodejs --out-dir pkg-node",
-    "prepublishOnly": "npm run build",
-    "publish": "npm publish --access public",
     "test": "cargo test"
   },
   "keywords": [
