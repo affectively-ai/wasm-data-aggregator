@@ -1,6 +1,6 @@
 {
   "name": "@affectively/wasm-data-aggregator",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "High-performance WebAssembly data aggregation - statistics, grouping, time-series operations.",
   "main": "pkg/wasm_data_aggregator.js",
   "types": "pkg/wasm_data_aggregator.d.ts",
@@ -26,7 +26,7 @@
     "rust"
   ],
   "author": "AFFECTIVELY <opensource@affectively.ai>",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/affectively-ai/wasm-data-aggregator.git"
