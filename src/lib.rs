@@ -173,33 +173,81 @@ pub fn filter_and_aggregate(
     }
 }
 
+/// Daily metric entry for a single day
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DailyMetric {
+    pub date: String,
+    pub count: usize,
+    pub sum: f64,
+    pub average: f64,
+    pub min: f64,
+    pub max: f64,
+}
+
 /// Calculate daily metrics aggregation (optimized for dashboard calculations)
-/// 
+///
+/// Groups observations by day (using millisecond timestamps) and computes
+/// per-day aggregation metrics within the specified date range.
+///
 /// # Arguments
-/// * `users_json` - JSON string of user data array
-/// * `date_range_json` - JSON string with startDate and endDate (ISO strings)
-/// 
+/// * `observations_json` - JSON string of Observation array
+/// * `date_range_json` - JSON string with `startTimestamp` and `endTimestamp` (u64 ms)
+///
 /// # Returns
-/// JSON string of aggregated daily metrics
+/// JSON string of HashMap<String, DailyMetric> keyed by date string (YYYY-MM-DD approx day index)
 #[wasm_bindgen]
 pub fn calculate_daily_metrics(
-    users_json: &str,
+    observations_json: &str,
     date_range_json: &str,
 ) -> String {
-    // Parse inputs
-    let _users: Vec<serde_json::Value> = match serde_json::from_str(users_json) {
-        Ok(u) => u,
+    let observations: Vec<Observation> = match serde_json::from_str(observations_json) {
+        Ok(o) => o,
         Err(_) => return "{}".to_string(),
     };
 
-    let _date_range: HashMap<String, String> = match serde_json::from_str(date_range_json) {
+    let date_range: HashMap<String, u64> = match serde_json::from_str(date_range_json) {
         Ok(d) => d,
         Err(_) => return "{}".to_string(),
     };
 
-    // This is a placeholder - actual implementation would parse dates and aggregate
-    // For now, return basic structure
-    let result = HashMap::<String, serde_json::Value>::new();
+    let start_ts = date_range.get("startTimestamp").copied().unwrap_or(0);
+    let end_ts = date_range.get("endTimestamp").copied().unwrap_or(u64::MAX);
+
+    // Filter to date range
+    let filtered: Vec<&Observation> = observations
+        .iter()
+        .filter(|obs| obs.timestamp >= start_ts && obs.timestamp <= end_ts)
+        .collect();
+
+    // Group by day (ms / 86_400_000)
+    const MS_PER_DAY: u64 = 86_400_000;
+    let mut daily: HashMap<u64, Vec<f64>> = HashMap::new();
+    for obs in &filtered {
+        let day = obs.timestamp / MS_PER_DAY;
+        daily.entry(day).or_insert_with(Vec::new).push(obs.value);
+    }
+
+    // Aggregate each day
+    let mut result: HashMap<String, DailyMetric> = HashMap::new();
+    for (day, values) in &daily {
+        let count = values.len();
+        let sum: f64 = values.iter().sum();
+        let min = values.iter().cloned().fold(f64::INFINITY, f64::min);
+        let max = values.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+        let average = if count > 0 { sum / count as f64 } else { 0.0 };
+
+        let day_key = format!("day-{}", day);
+        result.insert(day_key, DailyMetric {
+            date: format!("{}", day * MS_PER_DAY),
+            count,
+            sum,
+            average,
+            min,
+            max,
+        });
+    }
+
     serde_json::to_string(&result).unwrap_or_else(|_| "{}".to_string())
 }
 
@@ -258,8 +306,66 @@ mod tests {
         let filters = "{}";
         let group_by = "[]";
         let result = filter_and_aggregate(&json, filters, group_by);
-        
+
         let parsed: AggregationResult = serde_json::from_str(&result).unwrap();
         assert_eq!(parsed.count, 2);
+    }
+
+    #[test]
+    fn test_calculate_daily_metrics() {
+        let ms_per_day: u64 = 86_400_000;
+        let observations = vec![
+            Observation {
+                timestamp: ms_per_day * 10 + 1000,
+                value: 5.0,
+                metadata: HashMap::new(),
+            },
+            Observation {
+                timestamp: ms_per_day * 10 + 2000,
+                value: 15.0,
+                metadata: HashMap::new(),
+            },
+            Observation {
+                timestamp: ms_per_day * 11 + 1000,
+                value: 25.0,
+                metadata: HashMap::new(),
+            },
+        ];
+
+        let json = serde_json::to_string(&observations).unwrap();
+        let range = format!("{{\"startTimestamp\":{},\"endTimestamp\":{}}}", ms_per_day * 10, ms_per_day * 12);
+        let result = calculate_daily_metrics(&json, &range);
+        let parsed: HashMap<String, DailyMetric> = serde_json::from_str(&result).unwrap();
+
+        assert_eq!(parsed.len(), 2);
+        let day10 = parsed.get("day-10").unwrap();
+        assert_eq!(day10.count, 2);
+        assert_eq!(day10.sum, 20.0);
+        assert_eq!(day10.average, 10.0);
+        let day11 = parsed.get("day-11").unwrap();
+        assert_eq!(day11.count, 1);
+        assert_eq!(day11.sum, 25.0);
+    }
+
+    #[test]
+    fn test_aggregate_with_decay_empty() {
+        let result = aggregate_with_decay("[]", 10000.0, 3000);
+        let parsed: AggregationResult = serde_json::from_str(&result).unwrap();
+        assert_eq!(parsed.count, 0);
+        assert_eq!(parsed.sum, 0.0);
+    }
+
+    #[test]
+    fn test_aggregate_with_decay_invalid_json() {
+        let result = aggregate_with_decay("not json", 10000.0, 3000);
+        let parsed: AggregationResult = serde_json::from_str(&result).unwrap();
+        assert_eq!(parsed.count, 0);
+    }
+
+    #[test]
+    fn test_calculate_daily_metrics_empty() {
+        let result = calculate_daily_metrics("[]", "{\"startTimestamp\":0,\"endTimestamp\":999999999}");
+        let parsed: HashMap<String, DailyMetric> = serde_json::from_str(&result).unwrap();
+        assert_eq!(parsed.len(), 0);
     }
 }

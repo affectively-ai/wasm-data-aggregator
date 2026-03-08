@@ -29,7 +29,7 @@ pub fn aggregate_observations<'a>(observations: &'a [&'a Observation]) -> Aggreg
     }
 
     let count = observations.len();
-    let average = sum / count as f64;
+    let average = if count > 0 { sum / count as f64 } else { 0.0 };
 
     AggregationResult {
         sum,
