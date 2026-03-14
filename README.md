@@ -1,39 +1,37 @@
 # @affectively/wasm-data-aggregator
 
-High-performance WebAssembly data aggregation utilities written in Rust.
+`@affectively/wasm-data-aggregator` is a Rust/WebAssembly module for common statistics and grouping tasks.
 
-[![npm](https://img.shields.io/npm/v/@affectively/wasm-data-aggregator.svg)](https://www.npmjs.com/package/@affectively/wasm-data-aggregator)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+The fair brag is that it covers a useful middle ground: more than one numeric helper, but still small enough to drop into a project as a focused utility.
 
-## Features
+## What It Helps You Do
 
-- **Statistics** - Mean, median, std dev, percentiles
-- **Grouping** - Group-by operations with aggregations
-- **Time Series** - Rolling windows, resampling
-- **Histogram** - Binning and distribution analysis
+- compute summary statistics
+- group and aggregate records
+- run simple time-series smoothing operations
 
 ## Installation
 
 ```bash
 npm install @affectively/wasm-data-aggregator
-```text
+```
 
 ## Quick Start
 
-```typescript
-import init, { compute_stats, group_by, rolling_mean } from '@affectively/wasm-data-aggregator';
+```ts
+import init, {
+  compute_stats,
+  group_by,
+  rolling_mean,
+} from '@affectively/wasm-data-aggregator';
 
 await init();
 
-const stats = compute_stats(values); // { mean, median, stdDev, min, max }
+const stats = compute_stats(values);
 const grouped = group_by(data, 'category', 'sum');
-const smoothed = rolling_mean(timeSeries, 7); // 7-point rolling mean
+const smoothed = rolling_mean(timeSeries, 7);
 ```
 
-## License
+## Why This README Is Grounded
 
-MIT License
-
----
-
-Made with ️ by [AFFECTIVELY](https://affectively.ai)
+This package does not need a larger analytics story. The strongest fair brag is that it already gives you a focused WASM module for common aggregation tasks.
