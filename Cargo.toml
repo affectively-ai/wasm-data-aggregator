@@ -5,7 +5,7 @@ authors = ["AFFECTIVELY <opensource@affectively.ai>"]
 edition = "2021"
 license = "MIT"
 description = "High-performance data aggregation for WebAssembly - statistics, grouping, time-series"
-repository = "https://github.com/affectively-ai/wasm-data-aggregator"
+repository = "https://github.com/forkjoin-ai/wasm-data-aggregator"
 keywords = ["wasm", "data", "aggregation", "statistics"]
 categories = ["data-structures", "wasm"]
 

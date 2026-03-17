@@ -29,7 +29,7 @@
   "license": "UNLICENSED",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/affectively-ai/wasm-data-aggregator.git"
+    "url": "git+https://github.com/forkjoin-ai/wasm-data-aggregator.git"
   },
   "publishConfig": {
     "access": "public"
