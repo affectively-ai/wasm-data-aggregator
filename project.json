@@ -62,6 +62,20 @@
         "command": "node scripts/open-source-repo-target.mjs submodule-update-reference open-source/wasm-data-aggregator",
         "cwd": "."
       }
+    },
+    "pr:list": {
+      "executor": "a0:run-commands",
+      "options": {
+        "command": "node scripts/open-source-repo-target.mjs pr-list open-source/wasm-data-aggregator",
+        "cwd": "."
+      }
+    },
+    "pr:merge-all": {
+      "executor": "a0:run-commands",
+      "options": {
+        "command": "node scripts/open-source-repo-target.mjs pr-merge-all open-source/wasm-data-aggregator",
+        "cwd": "."
+      }
     }
   }
 }
