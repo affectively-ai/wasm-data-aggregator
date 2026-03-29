@@ -1,0 +1,67 @@
+{
+  "name": "@affectively/wasm-data-aggregator",
+  "projectType": "library",
+  "sourceRoot": "open-source/wasm-data-aggregator/src",
+  "tags": [
+    "scope:open-source",
+    "type:lib"
+  ],
+  "targets": {
+    "build": {
+      "executor": "a0:run-commands",
+      "options": {
+        "command": "node scripts/open-source-repo-target.mjs build open-source/wasm-data-aggregator",
+        "cwd": "."
+      }
+    },
+    "lint": {
+      "executor": "a0:run-commands",
+      "options": {
+        "command": "node scripts/open-source-repo-target.mjs lint open-source/wasm-data-aggregator",
+        "cwd": "."
+      }
+    },
+    "test": {
+      "executor": "a0:run-commands",
+      "options": {
+        "command": "node scripts/open-source-repo-target.mjs test open-source/wasm-data-aggregator",
+        "cwd": "."
+      }
+    },
+    "typecheck": {
+      "executor": "a0:run-commands",
+      "options": {
+        "command": "node scripts/open-source-repo-target.mjs typecheck open-source/wasm-data-aggregator",
+        "cwd": "."
+      }
+    },
+    "github:push": {
+      "executor": "a0:run-commands",
+      "options": {
+        "command": "node scripts/open-source-repo-target.mjs github-push open-source/wasm-data-aggregator",
+        "cwd": "."
+      }
+    },
+    "forge:push": {
+      "executor": "a0:run-commands",
+      "options": {
+        "command": "node scripts/open-source-repo-target.mjs forge-push open-source/wasm-data-aggregator",
+        "cwd": "."
+      }
+    },
+    "push": {
+      "executor": "a0:run-commands",
+      "options": {
+        "command": "node scripts/open-source-repo-target.mjs push open-source/wasm-data-aggregator",
+        "cwd": "."
+      }
+    },
+    "submodule:update-reference": {
+      "executor": "a0:run-commands",
+      "options": {
+        "command": "node scripts/open-source-repo-target.mjs submodule-update-reference open-source/wasm-data-aggregator",
+        "cwd": "."
+      }
+    }
+  }
+}
