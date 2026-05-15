@@ -14,7 +14,9 @@
   "scripts": {
     "build": "wasm-pack build --target web --out-dir pkg",
     "build:node": "wasm-pack build --target nodejs --out-dir pkg-node",
-    "test": "cargo test"
+    "test": "cargo test",
+    "type-check": "echo \"No TypeScript configuration found, skipping typecheck\"",
+    "typecheck": "echo \"No TypeScript configuration found, skipping typecheck\""
   },
   "keywords": [
     "wasm",
