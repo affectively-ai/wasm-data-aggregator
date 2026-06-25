@@ -1,0 +1,91 @@
+# wasm-data-aggregator — easy-deploy site (driven entirely by this file).
+#
+# Deploy with:  a0 xr deploy
+#
+# Content is sourced from open-source/wasm-data-aggregator/README.md — keep it honest.
+
+name = "wasm-data-aggregator-site"
+compatibility_date = "2025-01-01"
+workers_dev = true
+
+[site]
+kit = "oss-template"
+title = "wasm-data-aggregator — fast data aggregation in WebAssembly"
+
+[site.project]
+name = "wasm-data-aggregator"
+tagline = "High-performance data aggregation, compiled from Rust to WebAssembly."
+description = "WebAssembly data aggregation utilities written in Rust — statistics, group-by, time-series, and histogram operations that run at near-native speed in the browser or Node."
+logo = "grid"
+accent = "#7c3aed"
+theme = "dark"
+repo = "forkjoin-ai/wasm-data-aggregator"
+
+[site.sigil]
+seed = "wasm-data-aggregator"
+
+[site.nav]
+links = ["Features|#features", "Quickstart|#quickstart", "FAQ|#faq", "Source|https://forgo.cloud/forkjoin-ai/wasm-data-aggregator"]
+
+[site.hero]
+eyebrow = "Rust → WebAssembly · statistics · time-series"
+install = "npm install @affectively/wasm-data-aggregator"
+cta_primary = "Get started"
+cta_primary_href = "#quickstart"
+cta_secondary = "Browse the source"
+cta_secondary_href = "https://forgo.cloud/forkjoin-ai/wasm-data-aggregator"
+
+[[site.features]]
+icon = "gauge"
+title = "Statistics"
+body = "Mean, median, standard deviation, and percentiles computed over numeric arrays — returned as a single stats object."
+
+[[site.features]]
+icon = "layers"
+title = "Grouping"
+body = "Group-by operations with aggregations — bucket records by a key and fold each group with sum and other reducers."
+
+[[site.features]]
+icon = "zap"
+title = "Time series"
+body = "Rolling windows and resampling — smooth a series with an N-point rolling mean and reshape it over time."
+
+[[site.features]]
+icon = "cpu"
+title = "Histogram"
+body = "Binning and distribution analysis — turn raw values into a histogram to inspect their distribution."
+
+[site.quickstart]
+title = "Aggregate in WebAssembly"
+
+[[site.quickstart.tab]]
+label = "Install"
+code = "npm install @affectively/wasm-data-aggregator"
+
+[[site.quickstart.tab]]
+label = "Use"
+code = "import init, { compute_stats, group_by, rolling_mean } from '@affectively/wasm-data-aggregator';\n\nawait init();\n\nconst stats = compute_stats(values); // { mean, median, stdDev, min, max }\nconst grouped = group_by(data, 'category', 'sum');\nconst smoothed = rolling_mean(timeSeries, 7); // 7-point rolling mean"
+
+[[site.faq]]
+q = "What is wasm-data-aggregator?"
+a = "A set of high-performance data aggregation utilities written in Rust and compiled to WebAssembly — statistics, grouping, time-series, and histogram operations you call from JavaScript or TypeScript."
+
+[[site.faq]]
+q = "What can it compute?"
+a = "Statistics (mean, median, standard deviation, percentiles, min, max), group-by aggregations, rolling-window and resampling operations over time series, and histogram binning for distribution analysis."
+
+[[site.faq]]
+q = "How do I use it?"
+a = "Install the package, call init() to load the WebAssembly module, then call functions like compute_stats, group_by, and rolling_mean directly on your data."
+
+[site.footer]
+quote = "High-performance WebAssembly data aggregation — statistics, grouping, time-series operations."
+copyright = "© 2026 AFFECTIVELY · wasm-data-aggregator contributors"
+
+[[site.footer.column]]
+title = "Project"
+links = ["Features|#features", "Quickstart|#quickstart", "FAQ|#faq"]
+
+[[site.footer.column]]
+title = "More"
+links = ["Source|https://forgo.cloud/forkjoin-ai/wasm-data-aggregator", "AFFECTIVELY|https://affectively.ai"]
